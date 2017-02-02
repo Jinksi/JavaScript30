@@ -104,9 +104,8 @@
   </div>
 
 <script>
-  const checkboxes = Array.from(document.querySelectorAll('.item input[type="checkbox"]'))
   let shiftIsHeld = false
-  let lastIndex = 0
+  let lastIndex = null
 
   window.addEventListener('keydown', e => {
     shiftIsHeld = e.keyCode === 16
@@ -115,6 +114,7 @@
     shiftIsHeld = e.keyCode === 16 ? false : shiftIsHeld
   })
 
+  const checkboxes = Array.from(document.querySelectorAll('.item input[type="checkbox"]'))
   checkboxes.forEach((checkbox, index) => checkbox.addEventListener('change', (e) => handleChange(e, index)))
 
   function handleChange(e, eventIndex){
@@ -129,14 +129,13 @@
 
   function checkTheBoxes(eventIndex){
     // check if shift is selected of if no lastIndex
-    if(!shiftIsHeld || !lastIndex) return
+    if(!shiftIsHeld || lastIndex === null) return
     const toCheck = checkboxes.filter((checkbox, index) => {
       const checked = checkbox.checked
       // if checkbox selected and is smaller in between lastIndex, eventIndex
       if (index > lastIndex && index < eventIndex) return true
       if (index < lastIndex && index > eventIndex) return true
     })
-
     toCheck.forEach(checkbox => checkbox.checked = true)
   }
 
