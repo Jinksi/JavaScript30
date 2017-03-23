@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+  html {
+    color:black;
+    font-family: sans-serif;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  h1 {
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+
+  const hero = document.querySelector('.hero')
+  const text = hero.querySelector('h1')
+  const range = 500 // 100px max shadow range
+
+  // camera.position.x += ((mouseX * 0.03) - camera.position.x) * .005
+  // camera.position.y += (-(mouseY * 0.03) - camera.position.y) * .005
+
+  function shadow (e) {
+    const { offsetWidth: width, offsetHeight: height } = hero
+    let { offsetX: x, offsetY: y } = e
+
+    // Fix for hovering over child of hero
+    if (this !== e.target) {
+      x = x + e.target.offsetLeft
+      y = y + e.target.offsetTop
+    }
+
+    const xRange = ( -x / width * range ) + ( range / 2 )
+
+    const yRange = ( -y / height * range ) + ( range / 2 )
+
+    text.style.textShadow = `
+      ${xRange * .16}px ${yRange * .16}px  ${16 / 3}px hsla(${xRange * 0.6 - yRange * 0.6}, 100%, 70%, .9),
+      ${xRange * .33}px ${yRange * .33}px  ${33 / 3}px hsla(${xRange * 1.2 - yRange * 1.2}, 100%, 70%, .9),
+      ${xRange * .48}px ${yRange * .48}px  ${48 / 3}px hsla(${xRange * 1.8 - yRange * 1.8}, 100%, 70%, .9),
+      ${xRange * .66}px ${yRange * .66}px  ${66 / 3}px hsla(${xRange * 2.4 - yRange * 2.4}, 100%, 70%, .9),
+      ${xRange * .82}px ${yRange * .82}px  ${82 / 3}px hsla(${xRange * 3.2 - yRange * 3.2}, 100%, 70%, .9),
+      ${xRange * 1.0}px ${yRange * 1.0}px ${100 / 3}px hsla(${xRange * 3.6 - yRange * 3.6}, 100%, 70%, .9)
+    `
+
+  }
+
+  hero.addEventListener('mousemove', shadow)
+
+</script>
+</body>
+</html>
